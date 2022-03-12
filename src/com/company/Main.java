@@ -38,10 +38,16 @@ public class Main {
                 "удалению текущего рейтинга");
         System.out.println("Команда 'xml' в консоли приводит к работе (чтению) xml файлов\n");
         // Вводим имя игроков.
-        System.out.println("Введите имя 1 игрока");
-        NickName1 = console.nextLine();
-        System.out.println("Введите имя 2 игрока");
-        NickName2 = console.nextLine();
+        do {
+            System.out.println("Введите имя 1 игрока");
+            NickName1 = console.nextLine();
+            System.out.println("Введите имя 2 игрока");
+            NickName2 = console.nextLine();
+            if ((NickName1.equals(NickName2))||(NickName1=="")||NickName2==""){
+                System.out.println("!Имена игроков совпадают или пусты!");
+            }
+        } while ((NickName1.equals(NickName2))||(NickName1=="")||NickName2=="");
+
         GameList.add(new Logs(NickName1,0,0,0));
         GameList.add(new Logs(NickName2,0,0,0));
 
@@ -117,6 +123,7 @@ public class Main {
                 xml.clearCell();
             // Конец игр. Записываем данные о прошедших играх в рейтинг.
             } else if (CheckNew.equals("n")) {
+                // Если хотя бы 1 игра произошла, то производим запись
                 if ((GameList.get(0).getWin()!=0)||(GameList.get(0).getLose()!=0)||(GameList.get(0).getDeadHeat()!=0)){
                     Logs.WriteFile(GameList);
                 }

@@ -9,7 +9,7 @@ public class GameListXML {
     private ArrayList<Integer> cell = new ArrayList<>(); // Ячейка, куда сделан ход. Номера элемента массива - порядок ходов
     private int win; // Кто победил: 0 - игрок 1, 1 - игрок 2, 2 - ничья
 
-    // Паттерн проектирования "одиночка" по методу "Class Holder Singleton"
+    // Паттерн проектирования "одиночка"
     private GameListXML() {}
     private static class XMLHolder {
         public static final GameListXML HOLDER_INSTANCE = new GameListXML();

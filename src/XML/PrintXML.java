@@ -15,11 +15,11 @@ public class PrintXML {
         // i=1,2,3... - соответствует порядку ходов
         for (int i=0;i<xml.getCell().size();i++){
             if ((i%2)==0) {
-                System.out.println("Ход игрока 1 (X) :"+xml.getNickName1());
+                System.out.println("Ход игрока 1 (X) : "+xml.getNickName1());
                 filed[xml.getCellId(i)-1] = "X";
                 System.out.println(Main.PrintField(filed));
             } else {
-                System.out.println("Ход игрока 2 (O) :"+xml.getNickName2());
+                System.out.println("Ход игрока 2 (O) : "+xml.getNickName2());
                 filed[xml.getCellId(i)-1] = "O";
                 System.out.println(Main.PrintField(filed));
             }
