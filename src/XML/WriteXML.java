@@ -64,7 +64,7 @@ public class WriteXML {
                 Attr atribut2 = doc.createAttribute("num");
                 atribut2.setValue(Integer.toString(i+1));
                 Attr atribut3 = doc.createAttribute("playerId");
-                // Если i целочисленное, то ходит игрок 1, иначе игрок 2 (они всегда ходят по порядку)
+                // Если i четное, то ходит игрок 1, иначе игрок 2 (они всегда ходят по порядку)
                 if ((i%2)==0){
                     atribut3.setValue("1");
                 } else {
