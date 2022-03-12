@@ -55,6 +55,7 @@ public class ReadXML {
                 for (int i = 0; i < testList3.getLength(); i++) {
                     step = testList3.item(i);
                     // GameListXML.FormatStep - метод для преобразования данных
+                    //System.out.println(FormatStep.FormatStep(step.getTextContent()));
                     GameListXML.setCellId(FormatStep.FormatStep(step.getTextContent()));
                 }
             }
