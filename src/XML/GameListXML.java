@@ -1,40 +1,47 @@
 package XML;
 
+import java.util.ArrayList;
+
+// Вспомогательный класс для работы с xml файлами (считывание и запись)
 public class GameListXML {
-    // Вспомогательный класс для работы с xml файлами (считывание и запись)
     private String NickName1; // Имя игрока 1
     private String NickName2; // Имя игрока 2
-    private int cell[]; // Ячейка от 1 до 9, куда сделан ход. Номера элемента массива - порядок ходов
+    private ArrayList<Integer> cell = new ArrayList<>(); // Ячейка, куда сделан ход. Номера элемента массива - порядок ходов
     private int win; // Кто победил: 0 - игрок 1, 1 - игрок 2, 2 - ничья
 
-    public GameListXML(String NickName1, String NickName2, int cell[], int win){
-        this.NickName1 = NickName1;
-        this.NickName2 = NickName2;
-        this.cell = cell;
-        this.win = win;
+    // Паттерн проектирования "одиночка" по методу "Class Holder Singleton"
+    private GameListXML() {}
+    private static class XMLHolder {
+        public static final GameListXML HOLDER_INSTANCE = new GameListXML();
     }
-
-    public GameListXML(String NickName1, String NickName2){
-        this.NickName1 = NickName1;
-        this.NickName2 = NickName2;
-        this.cell = new int[] {0,0,0,0,0,0,0,0,0,0};
+    public static GameListXML getInstance() {
+        return XMLHolder.HOLDER_INSTANCE;
     }
 
     // геттеры и сеттеры
-    public int[] getCell() {
+    public String getNickName1() {
+        return NickName1;
+    }
+
+    public String getNickName2() {
+        return NickName2;
+    }
+
+    public void setNickName(String nickName1, String nickName2) {
+        NickName1 = nickName1;
+        NickName2 = nickName2;
+    }
+
+    public ArrayList<Integer> getCell() {
         return cell;
     }
 
-    public int getCellId(int id) {
-        return cell[id];
+    public int getCellId (int i){
+        return cell.get(i);
     }
 
-    public void setCell(int[] cell) {
-        this.cell = cell;
-    }
-
-    public void setCellId(int step, int number) {
-        this.cell[step] = number;
+    public void setCellId (int number) {
+        cell.add(number);
     }
 
     public int getWin() {
@@ -45,11 +52,7 @@ public class GameListXML {
         this.win = win;
     }
 
-    public String getNickName1() {
-        return NickName1;
-    }
-
-    public String getNickName2() {
-        return NickName2;
+    public void clearCell (){
+        cell.clear();
     }
 }

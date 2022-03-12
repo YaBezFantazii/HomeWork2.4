@@ -65,14 +65,15 @@ public class Logs {
                 resultWrite1.flush();
                 resultWrite1.close();
             }
+
             BufferedReader resultRead = new BufferedReader(new FileReader("Result.txt", StandardCharsets.UTF_8));
-            // Минимально проверяем файл result.txt на корректность
+            // Минимально проверяем файл result.txt на корректность, если неккорректен, то пересоздаем
             if (!resultRead.readLine().equals("Побед - поражений - ничьих")){
                 BufferedWriter resultWrite1 = new BufferedWriter(new FileWriter("Result.txt", StandardCharsets.UTF_8));
                 resultWrite1.flush();
                 resultWrite1.close();
+                resultRead.close();
             } else {
-                resultRead.readLine();
                 resultRead.readLine();
                 // Берем данные о рейтинге из файла Result.txt и записываем их в массив GameList
                 while ((line[0] = resultRead.readLine()) != null) {

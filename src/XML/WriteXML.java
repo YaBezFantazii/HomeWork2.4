@@ -14,7 +14,8 @@ import java.io.File;
 
 public class WriteXML {
 
-    public static void WriteXML(GameListXML xml) {
+    public static void WriteXML() {
+        GameListXML xml = GameListXML.getInstance();
         try {
             DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuild = docFactory.newDocumentBuilder();
@@ -55,9 +56,8 @@ public class WriteXML {
             Element game = doc.createElement("Game");
             gameplay.appendChild(game);
 
-            int i=0;
             //<Step>
-            while (xml.getCellId(i)!=0) {
+            for (int i=0;i<xml.getCell().size();i++){
                 Element stepX = doc.createElement("Step");
                 stepX.appendChild(doc.createTextNode(Integer.toString(xml.getCellId(i))));
                 game.appendChild(stepX);
@@ -72,11 +72,10 @@ public class WriteXML {
                 }
                 stepX.setAttributeNode(atribut2);
                 stepX.setAttributeNode(atribut3);
-                i++;
             }
 
             //<GameResult>
-            //Если ничья то пишем Draw!
+            //Если ничья то пишем "Draw!"
             if (xml.getWin()==2) {
                 Element GameResult = doc.createElement("GameResult");
                 GameResult.appendChild(doc.createTextNode("Draw!"));
@@ -116,7 +115,7 @@ public class WriteXML {
 
             String result = "gameplay1.xml";
             File file1 = new File(result);
-            i=1;
+            int i=1;
             // Если есть файл gameplay1.xml, по проверяем существует ли gameplay2.xml, потом gameplay3.xml
             // и так далее ( gameplay(i+1).xml ), пока не сможем создать новый файл.
             while (file1.exists()){

@@ -21,11 +21,11 @@ public class Main {
         String CheckNew = "";
         String Player;
         Boolean CheckWin;
-        int number, DeadHeat, xml;
+        int number, DeadHeat, FileXml;
         // Массив с результатами игр. Элементами массива являются объекты класса Logs.
         ArrayList<Logs> GameList = new ArrayList<>();
-        // Вспомогательный массив для записи результатов в xml
-        ArrayList<GameListXML> GameListXML = new ArrayList<>();
+        // Вспомогательный объект класса GameListXML для записи результатов в xml
+        GameListXML xml = GameListXML.getInstance();
 
         // Правила
         System.out.println("Для выбора ячейки куда хотите поставить крестик введите через консоль" +
@@ -55,7 +55,7 @@ public class Main {
 
             if (CheckNew.equals("y")) {
 
-                GameListXML.add(new GameListXML(NickName1,NickName2));
+                xml.setNickName(NickName1,NickName2);
                 // Обнуляем поле игры
                 DeadHeat = 0;
                 FieldGame = new String[] {"-", "-", "-", "-", "-", "-", "-", "-", "-"};
@@ -87,39 +87,40 @@ public class Main {
                         System.out.println(PrintField(FieldGame));
                         // Проверка на победу
                         CheckWin = Check.Check(FieldGame);
-                        // Записываем шаг в массив GameListXML
-                        GameListXML.get(0).setCellId(DeadHeat,number+1);
+                        // Записываем шаг в массив cell объекта класса GameListXML
+                        xml.setCellId(number+1);
                         // Если DeadHeat станет больше 8, то ничья, так как все ячейки будут заполненые и проверку на победу не пройдена.
                         DeadHeat++;
                     }
-                    // Пишем как закончилась игра, и добавляем новый элемент с результатом в массивы GameList и GameListXML.
+                    // Пишем как закончилась игра, и обновляем результаты GameList и GameListXLM (xlm)
                     if (CheckWin & Player.equals("0")) {
                         System.out.println("!!!Победил игрок "+NickName1+"!!!");
                         GameList.get(0).setWin( GameList.get(0).getWin()+1 );
                         GameList.get(1).setLose( GameList.get(1).getLose()+1 );
-                        GameListXML.get(0).setWin(0);
+                        xml.setWin(0);
                     } else if (CheckWin & Player.equals("X")) {
                         System.out.println("!!!Победил игрок "+NickName2+"!!!");
                         GameList.get(0).setLose( GameList.get(0).getLose()+1 );
                         GameList.get(1).setWin( GameList.get(1).getWin()+1 );
-                        GameListXML.get(0).setWin(1);
+                        xml.setWin(1);
                     } else if (DeadHeat>8) {
                         System.out.println("!!!Ничья!!!");
                         GameList.get(0).setDeadHeat( GameList.get(0).getDeadHeat()+1 );
                         GameList.get(1).setDeadHeat( GameList.get(1).getDeadHeat()+1 );
-                        GameListXML.get(0).setWin(2);
+                        xml.setWin(2);
                         CheckWin = true;
                     }
                 }
-                // Записываем результат в xml файл и очищаем массив GameListXML
-                WriteXML.WriteXML(GameListXML.get(0));
-                GameListXML.clear();
+                // Записываем результат в xml файл
+                WriteXML.WriteXML();
+                // Очищаем массив cell
+                xml.clearCell();
             // Конец игр. Записываем данные о прошедших играх в рейтинг.
             } else if (CheckNew.equals("n")) {
-                System.out.println("Конец игры. Вся статистика записана в файл Result.txt");
                 if ((GameList.get(0).getWin()!=0)||(GameList.get(0).getLose()!=0)||(GameList.get(0).getDeadHeat()!=0)){
                     Logs.WriteFile(GameList);
                 }
+                System.out.println("Конец игры. Вся статистика записана в файл Result.txt");
 
             // Архивируем и удаляем старый рейтинг. Рейтинг из текущей сессии сохранятся в архивном файле
             } else if (CheckNew.equals("r")){
@@ -146,20 +147,22 @@ public class Main {
                         return name.endsWith(".xml");
                     }};
                 files = f.list(filter);
-                System.out.println("Введите номер файла, указанный слева, чтобы напечатать его. Чтобы выйти из режима чтения XML " +
+                System.out.println("Введите номер файла, указанный слева перед скобкой, чтобы напечатать его. Чтобы выйти из режима чтения XML " +
                         "введите любое другое число (например 0)");
                 // Список xml файлов, лежащих в корневой папке проекта
                 for (int i=0;i<files.length;i++){
                     System.out.println(" "+(i+1)+") "+files[i]);
                 }
                 // Считываем, какую игру хотим посмотреть
-                xml = console.nextInt();
+                FileXml = console.nextInt();
                 // Если введеное число не соответсвует никакому файлу из перечисленных просто выходим в главное меню
-                if ((xml<=files.length)&(xml>0)){
+                if ((FileXml<=files.length)&(FileXml>0)){
                     // Получаем информацию из xml файла
-                    ReadXML.ReadXML(files[xml-1]);
+                    ReadXML.ReadXML(files[FileXml-1]);
+                    xml.clearCell();
                 }
                 console.nextLine();
+
             // Можно вводить только "y" "n" "r" "xml"
             } else {
                 System.out.println("Введен неккоректный символ");
